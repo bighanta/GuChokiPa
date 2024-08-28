@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SchnickSchnackSchnuck.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\tailwind.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tailwind.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,16 +26,29 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "tailwind.config.js",
+              "DocumentMoniker": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\tailwind.config.js",
+              "RelativeDocumentMoniker": "tailwind.config.js",
+              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\tailwind.config.js",
+              "RelativeToolTip": "tailwind.config.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-08-28T10:12:18.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "SchnickSchnackSchnuck.html",
               "DocumentMoniker": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html",
               "RelativeDocumentMoniker": "SchnickSchnackSchnuck.html",
-              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html",
-              "RelativeToolTip": "SchnickSchnackSchnuck.html",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAArAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html [Schreibgesch\u00FCtzt]",
+              "RelativeToolTip": "SchnickSchnackSchnuck.html [Schreibgesch\u00FCtzt]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAACAAAAAQAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2024-08-28T08:14:52.603Z",
-              "EditorCaption": ""
+              "EditorCaption": " [Schreibgesch\u00FCtzt]"
             }
           ]
         }
