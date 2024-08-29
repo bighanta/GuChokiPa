@@ -1,4 +1,18 @@
 <script setup>
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
+
+let posts = ref()
+
+onMounted( () => {
+  axios
+    .get('http://localhost:8080/api/tutorials')
+    .then((response) => {
+      this.posts = response.data
+    })
+})
+
+console.log(posts);
 let ergebnisComputer = 0;
 let ergebnisSpieler = 0;
 // Funktion "display" zur Anzeige von Texten im Paragraphen mit der ID "ausgabe" des HTML-Dokuments

@@ -1,31 +1,39 @@
 services:
-    mongo:
-        image: mongo
-        environment:
-            - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-            - MONGO_INITDB_DATABASE=project
-    mongo-express:
-        image: mongo-express
-        environment:
-            - ME_CONFIG_MONGODB_SERVER=mongo
-            - ME_CONFIG_MONGODB_PORT=27017
-            - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
-            - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-            - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ROOT_USER}
-            - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ROOT_PASSWORD}
-            - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
-            - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
-        depends_on:
-            - mongo
-        ports:
-          - "8888:8081"
+  # mongo:
+  #      image: mongo
+  #      environment:
+  #          - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+  #          - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+  #          - MONGO_INITDB_DATABASE=project
+  #  mongo-express:
+  #      image: mongo-express
+  #      environment:
+  #          - ME_CONFIG_MONGODB_SERVER=mongo
+  #          - ME_CONFIG_MONGODB_PORT=27017
+  #          - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+  #          - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+  #          - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ROOT_USER}
+  #          - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ROOT_PASSWORD}
+  #          - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
+  #          - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
+  #      depends_on:
+  #          - mongo
+  #      ports:
+  #        - "8888:8081"
+    mongo_db:
+      container_name: MongoDB
+      image: mongo
+      volumes:
+        - mongo_data:/data/db
+      ports:
+        - "27017:27017"
     express_docker:
        image: node:alpine
        container_name: express_docker
        entrypoint: /bin/sh
        ports:
          - 8080:8080
+         - 8081:8081
        working_dir: /api
        volumes:
          - type: bind
@@ -44,3 +52,6 @@ services:
            source: ./frontend
            target: /srv/app
        tty: true
+
+volumes:
+  mongo_data:
