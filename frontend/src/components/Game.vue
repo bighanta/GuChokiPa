@@ -1,26 +1,14 @@
 <script setup>
-import axios from 'axios'
-import { ref, onMounted } from 'vue'
+import axios from "axios";
+import { ref, onMounted } from "vue";
 
-let posts = ref()
-const BaseURL = "http://localhost:8000"
+let posts = ref();
 
-const data = {
-    title: "hallo",
-    description: "hallo",
-    published: true
-}
-onMounted( () => {
-axios
-    .get("http://localhost:8080/api/tutorials", {
-	headers: {
-	'Content-Type': 'application/json'
-	}
-      })
-    .then((response) => {
-      posts = response.data
-    })
-})
+onMounted(() => {
+  axios.get("http://localhost:8000/api/tutorials").then((response) => {
+    this.posts = response.data;
+  });
+});
 
 console.log(posts);
 let ergebnisComputer = 0;
@@ -111,13 +99,13 @@ var spielen = function (spielerAuswahl) {
 </script>
 
 <template>
-		<p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
-		
-		<button class="mx-5" @click="spielen('schere')">Schere</button>
-		<button class="mx-5" @click="spielen('stein')">Stein</button>
-		<button class="mx-5 mb-8" @click="spielen('papier')">Papier</button>
+  <p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
 
-		<p id="ausgabe"></p>
+  <button class="mx-5" @click="spielen('schere')">Schere</button>
+  <button class="mx-5" @click="spielen('stein')">Stein</button>
+  <button class="mx-5 mb-8" @click="spielen('papier')">Papier</button>
+
+  <p id="ausgabe"></p>
 </template>
 
 <styles scoped>
