@@ -3,12 +3,22 @@ import axios from 'axios'
 import { ref, onMounted } from 'vue'
 
 let posts = ref()
+const BaseURL = "http://localhost:8000"
 
+const data = {
+    title: "hallo",
+    description: "hallo",
+    published: true
+}
 onMounted( () => {
-  axios
-    .get('http://localhost:8080/api/tutorials')
+axios
+    .get("http://localhost:8080/api/tutorials", {
+	headers: {
+	'Content-Type': 'application/json'
+	}
+      })
     .then((response) => {
-      this.posts = response.data
+      posts = response.data
     })
 })
 
