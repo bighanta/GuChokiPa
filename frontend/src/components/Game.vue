@@ -101,9 +101,9 @@ var spielen = function (spielerAuswahl) {
 <template>
   <p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
 
-  <button class="mx-5" @click="spielen('schere')">Schere</button>
-  <button class="mx-5" @click="spielen('stein')">Stein</button>
-  <button class="mx-5 mb-8" @click="spielen('papier')">Papier</button>
+  <button class="mx-5" @click="spielen('schere')">✂️ Schere</button>
+  <button class="mx-5" @click="spielen('stein')">🪨 Stein</button>
+  <button class="mx-5 mb-8" @click="spielen('papier')">📄 Papier</button>
 
   <p id="ausgabe"></p>
 </template>
