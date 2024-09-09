@@ -1,20 +1,45 @@
-version: "1.0"
 services:
-  api:
-    container_name: api
-    build: ./api
-    command: sh -c "npm install -g nodemon && npm install && npm run dev"
-    volumes:
-      - ./api:/api
-    ports:
-      - "3000:3000"
-  mongo_db:
-    container_name: MongoDB
-    image: mongo
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "27017:27017"
+    mongo_db:
+      container_name: mongo_db
+      image: mongo
+      volumes:
+        - mongo_data:/data/db
+      environment:
+        - MONGODB_INITDB_DATABASE=project
+      ports:
+        - "27017:27017"
+      networks:
+        - db-net
+    express_docker:
+       image: node:alpine
+       container_name: express_docker
+       entrypoint: /bin/sh
+       ports:
+         - 8080:8080
+       working_dir: /api
+       volumes:
+         - type: bind
+           source: ./api
+           target: /api
+       networks:
+        - db-net
+       tty: true
+    vite_docker:
+       image: node:alpine
+       container_name: vite_docker
+       entrypoint: /bin/sh
+       ports:
+         - 8000:8000
+       working_dir: /srv/app
+       volumes:
+         - type: bind
+           source: ./frontend
+           target: /srv/app
+       tty: true
 
 volumes:
   mongo_data:
+
+networks:
+  db-net:
+    driver: bridge
