@@ -1,11 +1,18 @@
-/* Schnick, Schnack, Schnuck - einfaches Schere, Stein, Papier - Spiel in JavaScript/HTML */
-/* ====================================================================================== */
-ergebnisComputer = 0;
-ergebnisSpieler = 0;
+<script setup>
+import axios from "axios";
+import { ref, onMounted } from "vue";
 
-/* Funktionsblock */
-/* -------------- */
+let posts = ref();
 
+onMounted(() => {
+  axios.get("http://localhost:8000/api/tutorials").then((response) => {
+    this.posts = response.data;
+  });
+});
+
+console.log(posts);
+let ergebnisComputer = 0;
+let ergebnisSpieler = 0;
 // Funktion "display" zur Anzeige von Texten im Paragraphen mit der ID "ausgabe" des HTML-Dokuments
 var display = function (text) {
   var ausgabeParagraph = document.getElementById("ausgabe");
@@ -89,3 +96,17 @@ var spielen = function (spielerAuswahl) {
   ergebnis = "Spieler: " + ergebnisSpieler + " / Computer: " + ergebnisComputer;
   displayErgebnis(ergebnis);
 };
+</script>
+
+<template>
+  <p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
+
+  <button class="mx-5" @click="spielen('schere')">Schere</button>
+  <button class="mx-5" @click="spielen('stein')">Stein</button>
+  <button class="mx-5 mb-8" @click="spielen('papier')">Papier</button>
+
+  <p id="ausgabe"></p>
+</template>
+
+<styles scoped>
+</styles>
