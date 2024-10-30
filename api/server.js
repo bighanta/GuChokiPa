@@ -35,7 +35,9 @@ app.get("/", (req, res) => {
 });
 
 // Import Routes
-require("./route/tutorial.routes")(app);
+require("./route/score.routes")(app);
+require("./route/player.routes")(app);
+require("./route/session.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
