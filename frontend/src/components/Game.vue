@@ -2,13 +2,19 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
-let posts = ref();
+let scores = ref();
 
+const json = JSON.stringify({ player_id: 1, player_name: "Test", score: 10});
+const createScore = (() => (axios.post('http://localhost:8080/api/scores', json, {
+  headers: {
+    // Overwrite Axios's automatically set Content-Type
+    'Content-Type': 'application/json'
+  }
+})));
 onMounted(() => {
-  axios.get("http://localhost:8080/api/tutorials")
+  axios.get("http://localhost:8080/api/scores")
     .then((response) => {
     console.log(response.data);
-    posts = response;
   });
 });
 let ergebnisComputer = 0;
@@ -91,9 +97,12 @@ var spielen = function (spielerAuswahl) {
     computerAuswahl.substr(1) +
     ".\n";
   meldung = meldung + vergleich(spielerAuswahl, computerAuswahl);
-  display(meldung);
++  display(meldung);
 
   ergebnis = "Spieler: " + ergebnisSpieler + " / Computer: " + ergebnisComputer;
+  if(ergebnisSpieler == 3) {
+    createScore();
+  }
   displayErgebnis(ergebnis);
 };
 </script>
@@ -108,5 +117,5 @@ var spielen = function (spielerAuswahl) {
   <p id="ausgabe"></p>
 </template>
 
-<styles scoped>
++<styles scoped>
 </styles>
