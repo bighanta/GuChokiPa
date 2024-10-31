@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SchnickSchnackSchnuck.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\frontend\\src\\components\\Game.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\src\\components\\Game.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\api\\server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:api\\server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\frontend\\src\\App.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend\\src\\App.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,24 +22,53 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.vue",
+              "DocumentMoniker": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\frontend\\src\\App.vue",
+              "RelativeDocumentMoniker": "frontend\\src\\App.vue",
+              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\frontend\\src\\App.vue",
+              "RelativeToolTip": "frontend\\src\\App.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2024-09-09T11:03:09.361Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "server.js",
+              "DocumentMoniker": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\api\\server.js",
+              "RelativeDocumentMoniker": "api\\server.js",
+              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\api\\server.js",
+              "RelativeToolTip": "api\\server.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-09-04T09:14:59.017Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SchnickSchnackSchnuck.html",
-              "DocumentMoniker": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html",
-              "RelativeDocumentMoniker": "SchnickSchnackSchnuck.html",
-              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\SchnickSchnackSchnuck.html [Schreibgesch\u00FCtzt]",
-              "RelativeToolTip": "SchnickSchnackSchnuck.html [Schreibgesch\u00FCtzt]",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAmAAAAAQAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-08-28T08:14:52.603Z",
-              "EditorCaption": " [Schreibgesch\u00FCtzt]"
+              "Title": "Game.vue",
+              "DocumentMoniker": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\frontend\\src\\components\\Game.vue",
+              "RelativeDocumentMoniker": "frontend\\src\\components\\Game.vue",
+              "ToolTip": "C:\\Users\\jonathan.gass\\source\\repos\\GuChokiPa\\frontend\\src\\components\\Game.vue",
+              "RelativeToolTip": "frontend\\src\\components\\Game.vue",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAAAIsAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2024-09-04T08:45:42.476Z",
+              "EditorCaption": ""
             }
           ]
         }

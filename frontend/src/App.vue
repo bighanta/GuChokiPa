@@ -7,11 +7,9 @@ import Game from './components/Game.vue'
     <title>Schnick, Schnack, Schnuck</title>
   </head>
 
-  <body class="flex flex-col m-8">
+  <body class="flex flex-col m-8" style="width: 90%">
     <h1 class="m-8">Schnick, Schnack, Schnuck</h1>
-    <div>
-    <Game></Game>
-    </div>
+    <Game style="width: 90%"></Game>
   </body>
 </template>
 
