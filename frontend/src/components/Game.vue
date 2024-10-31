@@ -4,13 +4,6 @@ import { ref, onMounted } from "vue";
 
 let scores = ref();
 
-const json = JSON.stringify({ player_id: 1, player_name: "Test", score: 10});
-const createScore = (() => (axios.post('http://localhost:8080/api/scores', json, {
-  headers: {
-    // Overwrite Axios's automatically set Content-Type
-    'Content-Type': 'application/json'
-  }
-})));
 onMounted(() => {
   axios.get("http://localhost:8080/api/scores")
     .then((response) => {
@@ -31,6 +24,14 @@ var displayErgebnis = function (text) {
   var ausgabeParagraph = document.getElementById("ergebnis");
   ausgabeParagraph.innerHTML = text + "<br>";
   return;
+};
+
+function postScore(score) {
+  axios.post('http://localhost:8080/api/scores', JSON.stringify({ player_id: 1, player_name: "Test", score: score}), {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 };
 
 /* Funktion "vergleich" vergleicht die Eingaben und gibt das gewinnende Element zurück */
@@ -100,9 +101,6 @@ var spielen = function (spielerAuswahl) {
 +  display(meldung);
 
   ergebnis = "Spieler: " + ergebnisSpieler + " / Computer: " + ergebnisComputer;
-  if(ergebnisSpieler == 3) {
-    createScore();
-  }
   displayErgebnis(ergebnis);
 };
 </script>
@@ -115,6 +113,7 @@ var spielen = function (spielerAuswahl) {
   <button class="mx-5 mb-8" @click="spielen('papier')">Papier</button>
 
   <p id="ausgabe"></p>
+  <button class="mx-5 mb-8" @click="postScore(ergebnisSpieler)">Post Score</button>
 </template>
 
 +<styles scoped>
