@@ -1,5 +1,6 @@
 <script setup>
-import Game from './components/Game.vue'
+import { defineComponent } from 'vue';
+import { RouterView } from 'vue-router'; // Import RouterView for rendering routed components
 </script>
 
 <template>
@@ -9,10 +10,11 @@ import Game from './components/Game.vue'
 
   <body class="flex flex-col m-8" style="width: 90%">
     <h1 class="m-8">Schnick, Schnack, Schnuck</h1>
-    <Game style="width: 90%"></Game>
+    <RouterView class="w-full"></RouterView> <!-- Render the current route component -->
   </body>
 </template>
 
 <style scoped>
-
+/* Add any styles for the App.vue component here if needed */
 </style>
+

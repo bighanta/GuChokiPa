@@ -38,6 +38,7 @@ app.get("/", (req, res) => {
 require("./route/score.routes")(app);
 require("./route/player.routes")(app);
 require("./route/session.routes")(app);
+require("./route/gamestate.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
