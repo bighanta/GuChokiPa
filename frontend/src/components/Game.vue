@@ -2,6 +2,8 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
+const props = defineProps(["sessionState"]);
+
 let posts = ref();
 
 onMounted(() => {
@@ -13,21 +15,21 @@ onMounted(() => {
 console.log(posts);
 let ergebnisComputer = 0;
 let ergebnisSpieler = 0;
-// Funktion "display" zur Anzeige von Texten im Paragraphen mit der ID "ausgabe" des HTML-Dokuments
+// Anzeigen von Texten im Paragraphen mit der ID "ausgabe" des HTML-Dokuments
 var display = function (text) {
   var ausgabeParagraph = document.getElementById("ausgabe");
   ausgabeParagraph.innerHTML = text + "<br>";
   return;
 };
 
-// Funktion "displayErgebnis" zur Anzeige von Texten im Paragraphen mit der ID "ergebnis" des HTML-Dokuments
+// Anzeigen von Texten im Paragraphen mit der ID "ergebnis" des HTML-Dokuments
 var displayErgebnis = function (text) {
   var ausgabeParagraph = document.getElementById("ergebnis");
   ausgabeParagraph.innerHTML = text + "<br>";
   return;
 };
 
-/* Funktion "vergleich" vergleicht die Eingaben und gibt das gewinnende Element zurück */
+/* Vergleicht die Eingaben und gibt das gewinnende Element zurück */
 var vergleich = function (auswahlSpieler, auswahlComputer) {
   auswahlSpieler = auswahlSpieler.toLowerCase().trim();
   auswahlComputer = auswahlComputer.toLowerCase().trim();
@@ -75,8 +77,7 @@ var erzeugeComputerAuswahl = function () {
   }
 };
 
-/* Hauptteil */
-/* --------- */
+/* Kombination und Auslösen der anderen Funktionen in der richtigen Reihenfolge */
 var spielen = function (spielerAuswahl) {
   var meldung;
   var ergebnis;
@@ -98,43 +99,18 @@ var spielen = function (spielerAuswahl) {
 };
 </script>
 
-<template style="width:80%">
-    <p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
+<template style="width: 80%">
+  <p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
 
-    <div>
-        <button class="mx-5" @click="spielen('schere')">✂️ Schere</button>
-        <button class="mx-5" @click="spielen('stein')">🪨 Stein</button>
-        <button class="mx-5 mb-8" @click="spielen('papier')">📄 Papier</button>
-    </div>
+  <div>
+    <button class="mx-5" @click="spielen('schere')">✂️ Schere</button>
+    <button class="mx-5" @click="spielen('stein')">🪨 Stein</button>
+    <button class="mx-5 mb-8" @click="spielen('papier')">📄 Papier</button>
+  </div>
 
-    <p id="ausgabe"></p>
+  <p id="ausgabe"></p>
 
-    <table style="width: 100%">
-        <tr style="background-color: darkslategrey">
-            <th>Platz</th>
-            <th>Punkte</th>
-            <th>Spieler</th>
-        </tr>
-        <tr>
-            <th style="background-color: gold;">1.</th>
-            <td>XXX</td>
-            <td>Tick</td>
-        </tr>
-        <tr>
-            <th style="background-color: silver">2.</th>
-            <td>XXX</td>
-            <td>Trick</td>
-        </tr>
-        <tr>
-            <th style="background-color: coral">3.</th>
-            <td>XXX</td>
-            <td>Tom</td>
-        </tr>
-    </table>
+  <button @click="props.sessionState = !props.sessionState">
+    Spiel verlassen
+  </button>
 </template>
-
-<style scoped>
-    table, th, td {
-        border: 1px solid black;
-    }
-</style>
