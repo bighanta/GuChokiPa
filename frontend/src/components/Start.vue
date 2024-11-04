@@ -5,31 +5,37 @@ import App from "../App.vue";
 <template>
   <table>
     <tr>
-      <th>Spiel erstellen</th>
-      <th>Spiel beitreten</th>
+      <th colspan="2">Spiel erstellen</th>
+      <th colspan="2">Spiel beitreten</th>
     </tr>
     <tr>
-      <td>
-        <label for="username-new-input" class="mr-2">Spielername:</label>
-        <input id="username-new-input" type="text" />
+      <td class="cell-with-border">
+        <label for="username-new-input" class="ml-3">Spielername:</label>
       </td>
       <td>
-        <label for="username-join-input" class="mr-2">Spielername:</label>
+        <input id="username-new-input" type="text" />
+      </td>
+      <td class="cell-with-border">
+        <label for="username-join-input" class="ml-3">Spielername:</label>
+      </td>
+      <td>
         <input id="username-join-input" type="text" />
       </td>
     </tr>
     <tr>
-      <td></td>
+      <td colspan="2"></td>
+      <td class="cell-with-border">
+        <label for="game-id-input" class="ml-3">Session Id:</label>
+      </td>
       <td>
-        <label for="game-id-input" class="mr-2">Session Id:</label>
         <input id="game-id-input" />
       </td>
     </tr>
     <tr>
-      <td>
+      <td colspan="2" class="cell-with-border">
         <button @click="">Spiel erstellen</button>
       </td>
-      <td>
+      <td colspan="2" class="cell-with-border">
         <button @click="">Spiel beitreten</button>
       </td>
     </tr>
@@ -43,8 +49,12 @@ table {
   border: 1px solid white;
 }
 
-td {
+.cell-with-border {
   border-left: 1px solid white;
+  text-align: end;
+}
+
+td {
   text-align: center;
   padding: 1em;
 }
