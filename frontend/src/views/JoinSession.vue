@@ -1,36 +1,66 @@
-<!-- src/views/JoinSession.vue -->
-<template>
-  <div>
-    <h1>Join a Session</h1>
-    <input type="text" v-model="sessionId" placeholder="Enter session ID" class="mt-4 mb-4 p-2 border border-gray-300 rounded" />
-    <input type="text" v-model="playerName" placeholder="Enter your name" class="mt-4 mb-4 p-2 border border-gray-300 rounded" />
-    <button @click="joinSession" class="bg-blue-500 text-white px-4 py-2 rounded">Join Session</button>
-  </div>
-</template>
-
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
-const router = useRouter();
-const sessionId = ref('');
+const sessionCode = ref('');
 const playerName = ref('');
+const router = useRouter();
+const errorMessage = ref('');
 
 const joinSession = async () => {
   try {
-    const response = await axios.post(`http://localhost:8080/api/sessions/${sessionId.value}/join`, { player_name: playerName.value });
-    if (response.data.success) {
-      // Navigate to the GameScreen with the session ID
-      router.push({ name: 'game', query: { sessionId: sessionId.value } });
+    // Check if both fields are filled
+    if (!sessionCode.value || !playerName.value) {
+      errorMessage.value = "Please enter both session code and player name.";
+      return;
+    }
+
+    // Send request to join the session
+    const response = await axios.post(`http://localhost:8080/api/sessions/${sessionCode.value}/join`, {
+      playerName: playerName.value
+    });
+
+    if (response.status === 200) {
+      // Redirect to the GameScreen view with the session code as a parameter
+      router.push({ name: 'game', params: { sessionCode: sessionCode.value } });
     }
   } catch (error) {
-    console.error("Error joining session:", error);
+    errorMessage.value = error.response?.data?.message || 'Error joining session. Please check the session code and try again.';
   }
 };
 </script>
 
+<template>
+  <div class="join-session flex flex-col items-center justify-center h-screen space-y-4">
+    <h1 class="text-2xl font-bold">Join a Session</h1>
+
+    <input
+      v-model="sessionCode"
+      type="text"
+      placeholder="Enter Session Code"
+      class="border p-2 rounded w-64"
+    />
+
+    <input
+      v-model="playerName"
+      type="text"
+      placeholder="Enter Your Name"
+      class="border p-2 rounded w-64"
+    />
+
+    <button @click="joinSession" class="bg-blue-500 text-white p-2 rounded w-64">
+      Join Game
+    </button>
+
+    <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+  </div>
+</template>
+
 <style scoped>
-/* Add any additional styles here */
+.join-session {
+  max-width: 400px;
+  margin: 0 auto;
+}
 </style>
 

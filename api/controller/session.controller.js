@@ -55,33 +55,39 @@ exports.findByCode = (req, res) => {
     });
 };
 
-// Add a player to a session
-exports.addPlayer = (req, res) => {
-  const sessionCode = req.params.session_code; // Get session code from request parameters
-  const playerId = req.body.player_id; // Get player_id from request body
+// Controller method to join a session by session code
+exports.joinSession = (req, res) => {
+  const sessionCode = req.params.session_code;
+  const { playerName } = req.body;
 
   // Validate request
-  if (!playerId) {
-    return res.status(400).send({ message: "Player ID cannot be empty!" });
+  if (!playerName) {
+    return res.status(400).send({ message: "Player name is required." });
   }
 
-  Session.findOneAndUpdate(
-    { session_code: sessionCode },
-    { $addToSet: { players: playerId } }, // Use addToSet to avoid duplicates
-    { new: true }
-  )
-    .populate("players")
-    .then(data => {
-      if (!data) {
-        return res.status(404).send({ message: `Session not found with code ${sessionCode}` });
+  // Find session by session code and add player if not already added
+  Session.findOne({ session_code: sessionCode })
+    .then(session => {
+      if (!session) {
+        return res.status(404).send({ message: `Session with code ${sessionCode} not found.` });
       }
-      res.send(data); // Respond with the updated session
+
+      // Check if player is already in the session
+      if (session.players.includes(playerName)) {
+        return res.status(400).send({ message: "Player is already in this session." });
+      }
+
+      // Add the player to the session
+      session.players.push(playerName);
+      return session.save();
     })
-    .catch(err => {
-      console.error('Error adding player to session:', err);
+    .then(updatedSession => {
+      res.status(200).send({ message: "Player added successfully.", session: updatedSession });
+    })
+    .catch(error => {
+      console.error('Error joining session:', error);
       res.status(500).send({
-        message: err.message || "Error adding player to session."
+        message: error.message || "An error occurred while trying to join the session."
       });
     });
 };
-

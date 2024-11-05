@@ -3,6 +3,7 @@ import Home from './views/Home.vue';
 import WaitingScreen from './views/WaitingScreen.vue';
 import GameScreen from './views/GameScreen.vue';
 import ResultScreen from './views/ResultScreen.vue'; // Import the ResultScreen
+import JoinSession from './views/JoinSession.vue'; // Import the ResultScreen
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: '/waiting',
     name: 'waiting',
     component: WaitingScreen,
+  },
+  {
+    path: '/join',
+    name: 'join',
+    component: JoinSession,
   },
   {
     path: '/game',

@@ -11,7 +11,7 @@ module.exports = app => {
   router.get("/:session_code", sessions.findByCode);
 
   // Add a player to a session
-  router.post("/:session_code/addPlayer", sessions.addPlayer);
+  router.post('/:session_code/join', sessions.joinSession);
 
   app.use("/api/sessions", router);
 };
