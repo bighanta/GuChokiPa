@@ -1,4 +1,3 @@
-<!-- JoinScreen.vue -->
 <template>
   <div class="join-screen">
     <h2>Join a Session</h2>
@@ -8,43 +7,41 @@
   </div>
 </template>
 
-<script>
-import { io } from "socket.io-client";
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { io } from 'socket.io-client';
 
-export default {
-  data() {
-    return {
-      sessionCode: "",
-      errorMessage: "",
-      socket: null,
-    };
-  },
-  methods: {
-    async joinSession() {
-      try {
-        // Connect to the backend via WebSocket
-        this.socket = io("http://localhost:8080");  // Update URL if different
-        this.socket.emit("joinSession", this.sessionCode);
+// Reactive state
+const sessionCode = ref('');
+const errorMessage = ref('');
+const socket = ref(null);
+const router = useRouter();
 
-        // Attempt to join session via API
-        const response = await fetch(`http://localhost:8080/api/sessions/${this.sessionCode}/join`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ playerName: "Player2" }),
-        });
+// Method to join the session
+const joinSession = async () => {
+  try {
+    // Connect to the backend via WebSocket
+    socket.value = io('http://localhost:8080'); // Update URL if different
+    socket.value.emit('joinSession', sessionCode.value);
 
-        const result = await response.json();
-        if (result.success) {
-          // Navigate to waiting screen if join was successful
-          this.$router.push({ name: "GameScreen", params: { sessionCode: this.sessionCode } });
-        } else {
-          this.errorMessage = result.message;
-        }
-      } catch (error) {
-        console.error("Error joining session:", error);
-        this.errorMessage = "Failed to join session. Please try again.";
-      }
+    // Attempt to join session via API
+    const response = await fetch(`http://localhost:8080/api/sessions/${sessionCode.value}/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ playerName: 'Player2' }),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      // Navigate to waiting screen if join was successful
+      router.push({ name: 'WaitingScreen', params: { sessionCode: sessionCode.value } });
+    } else {
+      errorMessage.value = result.message;
     }
+  } catch (error) {
+    console.error('Error joining session:', error);
+    errorMessage.value = 'Failed to join session. Please try again.';
   }
 };
 </script>

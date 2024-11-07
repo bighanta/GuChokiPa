@@ -7,46 +7,41 @@
   </div>
 </template>
 
-<script>
-import { io } from "socket.io-client";
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { io } from 'socket.io-client';
 
-export default {
-  data() {
-    return {
-      socket: null,
-      sessionCode: null,
-      sessionFull: false,  // Flag to check if session is full
-    };
-  },
-  mounted() {
-    // Get the session code from the route parameters
-    this.sessionCode = this.$route.params.sessionCode;
+// Reactive state
+const sessionCode = useRoute().params.sessionCode;
+const sessionFull = ref(false);
+const socket = ref(null);
+const router = useRouter();
 
-    // Connect to the socket and join the session room
-    this.socket = io("http://localhost:8080");  // Adjust URL if needed
+// Mounting logic for socket connection
+onMounted(() => {
+  socket.value = io("http://localhost:8080");  // Adjust URL as needed
 
-    // Emit to the backend to join the session
-    this.socket.emit("joinGame", { sessionCode: this.sessionCode });
+  // Emit to the backend to join the session
+  socket.value.emit("joinGame", { sessionCode });
 
-    // Listen for the "sessionFull" event from the backend
-    this.socket.on("sessionFull", (message) => {
-      // Set the flag to true if session is full
-      this.sessionFull = true;
-    });
+  // Listen for the "sessionFull" event from the backend
+  socket.value.on("sessionFull", (message) => {
+    sessionFull.value = true;
+  });
 
-    // Listen for the "gameStart" event to navigate to the game screen
-    this.socket.on("gameStart", (message) => {
-      // Redirect to the Game Screen when both players have joined
-      this.$router.push({ name: "GameScreen", params: { sessionCode: this.sessionCode } });
-    });
-  },
-  beforeUnmount() {
-    // Disconnect the socket when the component is destroyed
-    if (this.socket) {
-      this.socket.disconnect();
-    }
-  },
-};
+  // Listen for the "gameStart" event to navigate to the game screen
+  socket.value.on("gameStart", () => {
+    router.push({ name: "GameScreen", params: { sessionCode } });
+  });
+});
+
+// Cleanup on component unmount
+onBeforeUnmount(() => {
+  if (socket.value) {
+    socket.value.disconnect();
+  }
+});
 </script>
 
 <style scoped>

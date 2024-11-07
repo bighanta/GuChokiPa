@@ -18,49 +18,54 @@
   </div>
 </template>
 
-<script>
-import { io } from "socket.io-client";
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { io } from 'socket.io-client';
+import { useRoute, useRouter } from 'vue-router';
 
-export default {
-  data() {
-    return {
-      sessionCode: this.$route.params.sessionCode,
-      playerScore: 0,
-      opponentScore: 0,
-      roundResult: null,
-      socket: null,
-    };
-  },
-  mounted() {
-    this.socket = io("http://localhost:8080");  // Adjust URL as needed
-    this.socket.emit("joinGame", { sessionCode: this.sessionCode });
+// Reactive state
+const sessionCode = useRoute().params.sessionCode;
+const playerScore = ref(0);
+const opponentScore = ref(0);
+const roundResult = ref(null);
+const socket = ref(null);
 
-    // Listen for the round outcome
-    this.socket.on("roundOutcome", ({ result, playerScore, opponentScore }) => {
-      this.roundResult = result;
-      this.playerScore = playerScore;
-      this.opponentScore = opponentScore;
-    });
+// Setup socket connection and event listeners
+onMounted(() => {
+  // Initialize the socket connection
+  socket.value = io("http://localhost:8080");
 
-    // Listen for game over
-    this.socket.on("gameOver", (winner) => {
-      alert(`Game Over! ${winner} won!`);
-      this.$router.push('/');
-    });
-  },
-  methods: {
-    makeMove(move) {
-      this.socket.emit("playerMove", { move, sessionCode: this.sessionCode });
-    },
-    nextRound() {
-      this.roundResult = null;  // Clear round result for the next round
-    },
-  },
-  beforeUnmount() {
-    if (this.socket) {
-      this.socket.disconnect();
-    }
-  },
+  // Join the game session
+  socket.value.emit("joinGame", { sessionCode });
+
+  // Listen for the round outcome
+  socket.value.on("roundOutcome", ({ result, playerScore: newPlayerScore, opponentScore: newOpponentScore }) => {
+    roundResult.value = result;
+    playerScore.value = newPlayerScore;
+    opponentScore.value = newOpponentScore;
+  });
+
+  // Listen for game over
+  socket.value.on("gameOver", (winner) => {
+    alert(`Game Over! ${winner} won!`);
+    useRouter().push('/'); // Redirect to the home page
+  });
+});
+
+// Cleanup socket connection before the component is destroyed
+onBeforeUnmount(() => {
+  if (socket.value) {
+    socket.value.disconnect();
+  }
+});
+
+// Methods
+const makeMove = (move) => {
+  socket.value.emit("playerMove", { move, sessionCode });
+};
+
+const nextRound = () => {
+  roundResult.value = null; // Clear the round result for the next round
 };
 </script>
 

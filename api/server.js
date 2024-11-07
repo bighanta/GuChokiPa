@@ -17,7 +17,6 @@ const db = require("./model");
 
 // Import Routes
 require("./route/score.routes")(app);
-require("./route/player.routes")(app);
 
 // Attach io to the request object via middleware before the session routes
 app.use('/api/sessions', (req, res, next) => {
@@ -25,7 +24,6 @@ app.use('/api/sessions', (req, res, next) => {
   next();  // Continue to the route handler
 });
 require("./route/session.routes")(app);
-require("./route/gamestate.routes")(app);
 
 // In-memory storage for game sessions
 const gameSessions = new Map();
