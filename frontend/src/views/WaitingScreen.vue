@@ -1,25 +1,36 @@
 <template>
-  <div class="flex flex-col items-center justify-center h-screen">
-    <h1 class="text-3xl mb-4">Waiting for Players</h1>
-    <p class="text-lg mb-4">Session Code: {{ sessionCode }}</p>
-    <p>Waiting for another player to join...</p>
+  <div class="waiting">
+    <h2>Waiting for another player to join...</h2>
+    <p>Your session code: {{ sessionCode }}</p>
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+<script>
+import { io } from 'socket.io-client';
 
-const route = useRoute();
-const sessionCode = ref(route.query.sessionCode); // Extract session code from query params
+export default {
+  name: 'WaitingScreen',
+  data() {
+    return {
+      sessionCode: this.$route.params.sessionCode,
+      socket: null,
+    };
+  },
+  mounted() {
+    this.socket = io();
+    this.socket.emit('joinWaitingRoom', { sessionCode: this.sessionCode });
 
-// Watch for changes in the route to update sessionCode if needed
-watch(() => route.query.sessionCode, (newCode) => {
-  sessionCode.value = newCode;
-});
+    this.socket.on('playerJoined', () => {
+      this.$router.push(`/game/${this.sessionCode}`);
+    });
+  },
+  beforeUnmount() {
+    this.socket.disconnect();
+  },
+};
 </script>
 
 <style scoped>
-/* Add any styles you need here */
+/* Add some basic styling */
 </style>
 

@@ -1,17 +1,12 @@
 // routes/session.routes.js
-module.exports = app => {
-  const sessions = require("../controller/session.controller.js");
+const session = require("../controller/session.controller");
 
+module.exports = (app) => {
   const router = require("express").Router();
 
-  // Create a new session
-  router.post("/", sessions.create);
-
-  // Retrieve a session by session_code
-  router.get("/:session_code", sessions.findByCode);
-
-  // Add a player to a session
-  router.post('/:session_code/join', sessions.joinSession);
+  router.post("/create", session.createSession);
+  router.post("/:session_code/join", session.joinSession);
+  router.post("/:session_code/move", session.processMove);
 
   app.use("/api/sessions", router);
 };

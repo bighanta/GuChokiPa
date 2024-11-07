@@ -1,36 +1,16 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Home from './views/Home.vue';
-import WaitingScreen from './views/WaitingScreen.vue';
-import GameScreen from './views/GameScreen.vue';
-import ResultScreen from './views/ResultScreen.vue'; // Import the ResultScreen
-import JoinSession from './views/JoinSession.vue'; // Import the ResultScreen
+import { createRouter, createWebHistory } from "vue-router";
+import HomeScreen from "./views/Home.vue";
+import JoinScreen from "./views/JoinScreen.vue";
+import WaitingScreen from "./views/WaitingScreen.vue";
+import GameScreen from "./views/GameScreen.vue";
+import ResultScreen from "./views/ResultScreen.vue";
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home,
-  },
-  {
-    path: '/waiting',
-    name: 'waiting',
-    component: WaitingScreen,
-  },
-  {
-    path: '/join',
-    name: 'join',
-    component: JoinSession,
-  },
-  {
-    path: '/game',
-    name: 'game',
-    component: GameScreen,
-  },
-  {
-    path: '/result',
-    name: 'result',
-    component: ResultScreen, // Add the ResultScreen route
-  },
+  { path: "/", name: "HomeScreen", component: HomeScreen },
+  { path: "/join", name: "JoinScreen", component: JoinScreen },
+  { path: "/waiting/:sessionCode", name: "WaitingScreen", component: WaitingScreen, props: true },
+  { path: "/game/:sessionCode", name: "GameScreen", component: GameScreen, props: true },
+  { path: "/result", name: "ResultScreen", component: ResultScreen, props: true },
 ];
 
 const router = createRouter({
