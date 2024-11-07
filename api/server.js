@@ -31,8 +31,7 @@ const gameSessions = new Map();
 io.on("connection", (socket) => {
   console.log("New WebSocket connection:", socket.id);
 
-  // Player joining a game session
-  socket.on("joinGame", ({ sessionCode }) => {
+  socket.on("joinGame", ({ sessionCode, playerName }) => {
     socket.join(sessionCode);
 
     // Initialize session if it doesn’t exist
@@ -44,35 +43,54 @@ io.on("connection", (socket) => {
       });
     }
 
-    // Add player to session
+    // Add player to session with their name
     const game = gameSessions.get(sessionCode);
     const playerNum = Object.keys(game.players).length + 1;
+    console.log("Join game: ", game);
+
     if (playerNum > 2) {
       socket.emit("sessionFull", "Session is already full.");
       return;
     }
-    game.players[socket.id] = `player${playerNum}`;
-    socket.emit("joinedSession", `Player ${playerNum} joined session: ${sessionCode}`);
 
-    // Notify players when both have joined
+    game.players[socket.id] = { playerName, playerNum };  // Store player name and number
+    socket.emit("joinedSession", `Player ${playerNum} (${playerName}) joined session: ${sessionCode}`);
+
+    // Notify both players when both have joined
     if (Object.keys(game.players).length === 2) {
-      io.to(sessionCode).emit("gameStart", "Both players connected. Game starting!");
+      const [player1Id, player2Id] = Object.keys(game.players);
+      const player1Name = game.players[player1Id].playerName;
+      const player2Name = game.players[player2Id].playerName;
+
+      // Emit both player names to both players
+      io.to(sessionCode).emit("gameStart", {
+        message: "Both players connected. Game starting!",
+        player1Name,
+        player2Name
+      });
     }
   });
 
-  // Player makes a move
   socket.on("playerMove", ({ move, sessionCode }) => {
     const game = gameSessions.get(sessionCode);
     if (!game) return;
+    console.log("playerMove: ", game);
 
     // Store move for the player
     game.moves[socket.id] = move;
 
-    // Check if both players have made moves
+    // Get the player name from the session
+    const playerName = game.players[socket.id].playerName;
+
+    // Check if both players have made their moves
     if (Object.keys(game.moves).length === 2) {
       const [player1Id, player2Id] = Object.keys(game.players);
       const move1 = game.moves[player1Id];
       const move2 = game.moves[player2Id];
+
+      // Get the player names
+      const player1Name = game.players[player1Id].playerName;
+      const player2Name = game.players[player2Id].playerName;
 
       // Determine outcome of the round
       const result = determineRoundOutcome(move1, move2);
@@ -80,30 +98,35 @@ io.on("connection", (socket) => {
       if (result === "draw") {
         roundResultMessage = "Draw!";
       } else {
-        const winner = result === "player1" ? "Player 1" : "Player 2";
+        const winner = result === "player1" ? player1Name : player2Name;
         game.scores[result] += 1;
         roundResultMessage = `${winner} wins the round!`;
       }
 
-      // Emit round outcome and updated scores to both players
+      // Emit round outcome and updated scores to both players, including player names
       io.to(sessionCode).emit("roundOutcome", {
         result: roundResultMessage,
         playerScore: game.scores.player1,
         opponentScore: game.scores.player2,
+        player1Name,
+        player2Name
       });
 
       // Reset moves for the next round
       game.moves = {};
 
       // Check for game over condition
-      if (game.scores.player1 >= 5 || game.scores.player2 >= 5) {
-        const gameWinner = game.scores.player1 >= 5 ? "Player 1" : "Player 2";
-        io.to(sessionCode).emit("gameOver", gameWinner);
+      if (game.scores.player1 >= 3 || game.scores.player2 >= 3) {
+        const gameWinner = game.scores.player1 >= 3 ? player1Name : player2Name;
+        io.to(sessionCode).emit("gameOver", {
+          winner: gameWinner,
+          player1Name,
+          player2Name
+        });
         gameSessions.delete(sessionCode);  // Clear session after game over
       }
     }
   });
-
   // Handle disconnection
   socket.on("disconnect", () => {
     console.log("WebSocket disconnected:", socket.id);

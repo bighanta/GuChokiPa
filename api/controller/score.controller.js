@@ -1,64 +1,66 @@
 const db = require("../model");
 const Score = db.scores;
 
-// Create and Save a new Score
-exports.create = (req, res) => {
+// Create or Update Score
+exports.createOrUpdate = async (req, res) => {
   // Validate request
-  if (!req.body.player_id) {
-    res.status(400).send({ message: "Player ID cannot be empty!" });
-    return;
+  if (!req.body.player_name) {
+    return res.status(400).send({ message: "Player name cannot be empty!" });
   }
 
-  // Create a Score
-  const score = new Score({
-    player_id: req.body.player_id,
-    player_name: req.body.player_name || "test",
-    score: req.body.score || 0
-  });
+  try {
+    // Trim the player_name and make it case-insensitive
+    const playerName = req.body.player_name.trim().toLowerCase();
 
-  // Save Score in the database
-  score
-    .save()
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "An error occurred while creating the score."
+    // Check if the player already has a score (case-insensitive)
+    const existingScore = await Score.findOne({ player_name: playerName });
+
+    if (existingScore) {
+      // Player exists, add to their score
+      existingScore.score += req.body.score || 0;
+      const updatedScore = await existingScore.save();
+      res.send(updatedScore);
+    } else {
+      // Create a new score for a new player
+      const newScore = new Score({
+        player_name: playerName,  // Ensure the player name is normalized
+        score: req.body.score || 0,
       });
+      const savedScore = await newScore.save();
+      res.send(savedScore);
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "An error occurred while creating or updating the score.",
     });
+  }
+};
+// Retrieve all scores in descending order by score
+exports.findAllOrdered = async (req, res) => {
+  try {
+    const scores = await Score.find().sort({ score: -1 });
+    res.send(scores);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "An error occurred while retrieving scores.",
+    });
+  }
 };
 
-// Retrieve all score from the database
-exports.findAll = (req, res) => {
-  const player_id = req.query.player_id;
-  const condition = player_id ? { player_id: { $regex: new RegExp(player_id), $options: "i" } } : {};
-
-  Score.find(condition)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "An error occurred while retrieving score."
-      });
-    });
-};
-
-// Find a single Score with an id
+// Find a single Score by player_name
 exports.findOne = (req, res) => {
-  const id = req.params.id;
+  const playerName = req.params.player_name;
 
-  Score.findById(id)
+  Score.findOne({ player_name: playerName })
     .then(data => {
       if (!data) {
-        res.status(404).send({ message: `Score not found with id ${id}` });
+        res.status(404).send({ message: `Score not found for player ${playerName}` });
       } else {
         res.send(data);
       }
     })
     .catch(err => {
-      res.status(500).send({ message: `Error retrieving score with id=${id}` });
+      res.status(500).send({ message: `Error retrieving score for player=${playerName}` });
     });
 };
 
@@ -77,26 +79,26 @@ exports.findLatestScore = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || `Error retrieving latest score for player ${playerName}`
+        message: err.message || `Error retrieving latest score for player ${playerName}`,
       });
     });
 };
 
-// Update a Score by the id in the request
+// Update a Score for a player by player_name
 exports.update = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
-      message: "Data to update cannot be empty!"
+      message: "Data to update cannot be empty!",
     });
   }
 
-  const id = req.params.id;
+  const playerName = req.params.player_name;
 
-  Score.findByIdAndUpdate(id, req.body, { new: true })
+  Score.findOneAndUpdate({ player_name: playerName }, req.body, { new: true })
     .then(data => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update score with id=${id}. Score was not found!`
+          message: `Cannot update score for player ${playerName}. Score was not found!`,
         });
       } else {
         res.send({ message: "Score was updated successfully." });
@@ -104,20 +106,20 @@ exports.update = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: `Error updating score with id=${id}`
+        message: `Error updating score for player ${playerName}`,
       });
     });
 };
 
-// Delete a Score with the specified id in the request
+// Delete a Score for a player by player_name
 exports.delete = (req, res) => {
-  const id = req.params.id;
+  const playerName = req.params.player_name;
 
-  Score.findByIdAndRemove(id)
+  Score.findOneAndRemove({ player_name: playerName })
     .then(data => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete score with id=${id}. Score was not found!`
+          message: `Cannot delete score for player ${playerName}. Score was not found!`,
         });
       } else {
         res.send({ message: "Score was deleted successfully!" });
@@ -125,22 +127,22 @@ exports.delete = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: `Could not delete score with id=${id}`
+        message: `Could not delete score for player ${playerName}`,
       });
     });
 };
 
-// Delete all score from the database
+// Delete all scores from the database
 exports.deleteAll = (req, res) => {
   Score.deleteMany({})
     .then(data => {
       res.send({
-        message: `${data.deletedCount} score were deleted successfully!`
+        message: `${data.deletedCount} scores were deleted successfully!`,
       });
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || "An error occurred while deleting all score."
+        message: err.message || "An error occurred while deleting all scores.",
       });
     });
 };

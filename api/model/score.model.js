@@ -1,7 +1,6 @@
 module.exports = mongoose => {
   const schema = mongoose.Schema(
     {
-      player_id: { type: Number, required: true },
       player_name: { type: String, default: "test" },
       score: { type: Number, default: 0 }
     },
