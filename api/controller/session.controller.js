@@ -28,48 +28,35 @@ exports.createSession = (req, res) => {
   console.log(session);
 };
 
+// session.controller.js
 exports.joinSession = async (req, res) => {
-  const sessionCode = String(req.params.session_code); // Ensure sessionCode is a string
-  const { playerName } = req.body;  // Get the player name from the body
-  const io = req.io;
-
-  console.log("Attempting to join session with code:", sessionCode);
-
   try {
-    // Retrieve the session based on the session code
-    let session = await Session.findOne({ session_code: sessionCode });
+    const sessionCode = req.params.session_code;
+    const playerName = req.body.playerName || "Player2";
 
-    console.log("Fetched session from DB:", session);
+    // Fetch the session from the database
+    let session = await Session.findOne({ session_code: sessionCode });
 
     if (!session) {
       return res.status(404).json({ success: false, message: "Session not found" });
     }
 
-    // Check if the session already has 2 players
+    // Check if the session is full
     if (session.players.length >= 2) {
       return res.status(400).json({ success: false, message: "Session is full" });
     }
 
-    // Add the player if not already present
-    if (session.players.includes(playerName)) {
-      return res.status(400).json({ success: false, message: "Player already in session" });
-    }
-
-    // Push player and save session
+    // Add the new player to the session
     session.players.push(playerName);
     await session.save();
 
-    // Emit 'session_full' event if session now has 2 players
-    if (session.players.length === 2) {
-      io.to(sessionCode).emit("session_full", { sessionCode: sessionCode });
-    }
+    // Notify all players in the session room that the session is full
+    req.io.to(sessionCode).emit("session_full", { message: "Both players are connected. Starting game." });
 
-    // Respond with updated session
-    res.status(200).json({ success: true, session });
-
+    res.status(200).json({ success: true, message: "Joined session", session });
   } catch (error) {
     console.error("Error joining session:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 

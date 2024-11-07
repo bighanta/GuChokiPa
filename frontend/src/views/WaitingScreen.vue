@@ -1,36 +1,50 @@
+<!-- WaitingScreen.vue -->
 <template>
-  <div class="waiting">
+  <div class="waiting-screen">
     <h2>Waiting for another player to join...</h2>
-    <p>Your session code: {{ sessionCode }}</p>
+    <p>Session Code: {{ sessionCode }}</p>
+    <p>If both players are ready, the game will start shortly.</p>
   </div>
 </template>
 
 <script>
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 export default {
-  name: 'WaitingScreen',
   data() {
     return {
-      sessionCode: this.$route.params.sessionCode,
       socket: null,
+      sessionCode: null,
     };
   },
   mounted() {
-    this.socket = io();
-    this.socket.emit('joinWaitingRoom', { sessionCode: this.sessionCode });
+    // Get the session code from the route parameters
+    this.sessionCode = this.$route.params.sessionCode;
 
-    this.socket.on('playerJoined', () => {
-      this.$router.push(`/game/${this.sessionCode}`);
+    // Connect to the socket and join the session room
+    this.socket = io("http://localhost:8080");  // Adjust URL as needed
+    this.socket.emit("joinSession", this.sessionCode);
+
+    // Listen for the "session_full" event from the backend
+    this.socket.on("session_full", () => {
+      // Redirect to the game screen when session is full
+      this.$router.push({ name: "GameScreen", params: { sessionCode: this.sessionCode } });
     });
   },
   beforeUnmount() {
-    this.socket.disconnect();
-  },
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* Add some basic styling */
+.waiting-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
