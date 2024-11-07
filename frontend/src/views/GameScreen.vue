@@ -19,10 +19,9 @@
 </template>
 
 <script>
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 export default {
-  name: 'GameScreen',
   data() {
     return {
       sessionCode: this.$route.params.sessionCode,
@@ -33,35 +32,39 @@ export default {
     };
   },
   mounted() {
-    this.socket = io();
-    this.socket.emit('joinGame', { sessionCode: this.sessionCode });
+    this.socket = io("http://localhost:8080");  // Adjust URL as needed
+    this.socket.emit("joinGame", { sessionCode: this.sessionCode });
 
-    this.socket.on('roundOutcome', ({ result, playerScore, opponentScore }) => {
+    // Listen for the round outcome
+    this.socket.on("roundOutcome", ({ result, playerScore, opponentScore }) => {
       this.roundResult = result;
       this.playerScore = playerScore;
       this.opponentScore = opponentScore;
     });
 
-    this.socket.on('gameOver', (winner) => {
+    // Listen for game over
+    this.socket.on("gameOver", (winner) => {
       alert(`Game Over! ${winner} won!`);
       this.$router.push('/');
     });
   },
   methods: {
     makeMove(move) {
-      this.socket.emit('playerMove', { move, sessionCode: this.sessionCode });
+      this.socket.emit("playerMove", { move, sessionCode: this.sessionCode });
     },
     nextRound() {
-      this.roundResult = null;
+      this.roundResult = null;  // Clear round result for the next round
     },
   },
   beforeUnmount() {
-    this.socket.disconnect();
+    if (this.socket) {
+      this.socket.disconnect();
+    }
   },
 };
 </script>
 
 <style scoped>
-/* Add some basic styling */
+/* Add your styles here */
 </style>
 
