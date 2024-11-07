@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\api",
+    "\\frontend",
+    "\\frontend\\src",
+    "\\frontend\\src\\components"
   ],
-  "SelectedNode": "\\tailwind.config.js",
+  "SelectedNode": "\\frontend\\vue.config.js",
   "PreviewInSolutionExplorer": false
 }

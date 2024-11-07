@@ -1,11 +1,9 @@
-module.exports = {
-  devServer: {
-    proxy: {
-      "^/api": {
-        target: "http://localhost:8080/",
-        ws: true,
-        changeOrigin: true,
-      },
+export const devServer = {
+  proxy: {
+    "^/api": {
+      target: "http://localhost:8080/",
+      ws: true,
+      changeOrigin: true,
     },
   },
 };

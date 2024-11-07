@@ -2,6 +2,8 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
+const props = defineProps(["sessionState"]);
+
 let posts = ref();
 
 onMounted(() => {
@@ -13,21 +15,21 @@ onMounted(() => {
 console.log(posts);
 let ergebnisComputer = 0;
 let ergebnisSpieler = 0;
-// Funktion "display" zur Anzeige von Texten im Paragraphen mit der ID "ausgabe" des HTML-Dokuments
+// Anzeigen von Texten im Paragraphen mit der ID "ausgabe" des HTML-Dokuments
 var display = function (text) {
   var ausgabeParagraph = document.getElementById("ausgabe");
   ausgabeParagraph.innerHTML = text + "<br>";
   return;
 };
 
-// Funktion "displayErgebnis" zur Anzeige von Texten im Paragraphen mit der ID "ergebnis" des HTML-Dokuments
+// Anzeigen von Texten im Paragraphen mit der ID "ergebnis" des HTML-Dokuments
 var displayErgebnis = function (text) {
   var ausgabeParagraph = document.getElementById("ergebnis");
   ausgabeParagraph.innerHTML = text + "<br>";
   return;
 };
 
-/* Funktion "vergleich" vergleicht die Eingaben und gibt das gewinnende Element zurück */
+/* Vergleicht die Eingaben und gibt das gewinnende Element zurück */
 var vergleich = function (auswahlSpieler, auswahlComputer) {
   auswahlSpieler = auswahlSpieler.toLowerCase().trim();
   auswahlComputer = auswahlComputer.toLowerCase().trim();
@@ -75,8 +77,7 @@ var erzeugeComputerAuswahl = function () {
   }
 };
 
-/* Hauptteil */
-/* --------- */
+/* Kombination und Auslösen der anderen Funktionen in der richtigen Reihenfolge */
 var spielen = function (spielerAuswahl) {
   var meldung;
   var ergebnis;
@@ -98,15 +99,18 @@ var spielen = function (spielerAuswahl) {
 };
 </script>
 
-<template>
+<template style="width: 80%">
   <p class="m-8" id="ergebnis">Spieler 1: 0 / Spieler 2: 0</p>
 
-  <button class="mx-5" @click="spielen('schere')">Schere</button>
-  <button class="mx-5" @click="spielen('stein')">Stein</button>
-  <button class="mx-5 mb-8" @click="spielen('papier')">Papier</button>
+  <div>
+    <button class="mx-5" @click="spielen('schere')">✂️ Schere</button>
+    <button class="mx-5" @click="spielen('stein')">🪨 Stein</button>
+    <button class="mx-5 mb-8" @click="spielen('papier')">📄 Papier</button>
+  </div>
 
   <p id="ausgabe"></p>
-</template>
 
-<styles scoped>
-</styles>
+  <button @click="props.sessionState = !props.sessionState">
+    Spiel verlassen
+  </button>
+</template>
