@@ -1,4 +1,6 @@
 <script setup>
+import { defineComponent } from "vue";
+import { RouterView } from "vue-router"; // Import RouterView for rendering routed components
 import Game from "./components/Game.vue";
 import Start from "./components/Start.vue";
 import { provide, ref } from "vue";

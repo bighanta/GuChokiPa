@@ -5,3 +5,8 @@
 /.vs
 api/node_modules/
 /node_modules
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/GuChokiPa.iml
+/.idea/modules.xml
+/.idea/php.xml
+/.idea/vcs.xml

@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host --port 8000",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vite --host"
   },
   "dependencies": {
     "axios": "^1.7.5",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "vue": "^3.4.37",
     "vue-router": "^4.4.3"
   },

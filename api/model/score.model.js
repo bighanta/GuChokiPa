@@ -1,9 +1,8 @@
 module.exports = mongoose => {
-  var schema = mongoose.Schema(
+  const schema = mongoose.Schema(
     {
-      title: String,
-      description: String,
-      published: Boolean
+      player_name: { type: String, default: "test" },
+      score: { type: Number, default: 0 }
     },
     { timestamps: true }
   );
@@ -14,6 +13,7 @@ module.exports = mongoose => {
     return object;
   });
 
-  const Tutorial = mongoose.model("tutorial", schema);
-  return Tutorial;
+  const Score = mongoose.model("Score", schema);
+  return Score;
 };
+
