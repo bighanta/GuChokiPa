@@ -120,34 +120,30 @@ const sendFinalScore = async (winnerName, sessionPlayerName) => {
   // Only send the score if the winning player is the session player
   if (winnerName !== sessionPlayerName) {
     console.log("Winner is not the session player, score not sent.");
-setTimeout(() => {
-      router.push('/');
-    }, 3000); // Delay of 3 seconds for the player to see the message
+  } else {
 
+    const scoreDifference = Math.abs(playerScore.value - opponentScore.value);
+
+    try {
+      // Send the score to the server
+      await fetch("http://localhost:8080/api/scores", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          player_name: winnerName,
+          score: scoreDifference,
+        }),
+      });
+      console.log("Score sent successfully!");
+
+    } catch (error) {
+      console.error("Error sending score:", error);
+    }
   }
-
-  const scoreDifference = Math.abs(playerScore.value - opponentScore.value);
-
-  try {
-    // Send the score to the server
-    await fetch("http://localhost:8080/api/scores", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        player_name: winnerName,
-        score: scoreDifference,
-      }),
-    });
-    console.log("Score sent successfully!");
-
-    // Redirect to home after a short delay
     setTimeout(() => {
       router.push('/');
     }, 3000); // Delay of 3 seconds for the player to see the message
-  } catch (error) {
-    console.error("Error sending score:", error);
-  }
 };
 </script>
